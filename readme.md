@@ -6,3 +6,4 @@
 - Bcrypt
 - Moongose
 - MongoDb (Mongo Atlas)
+- JsonWebToken
