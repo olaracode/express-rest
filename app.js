@@ -1,15 +1,20 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const app = express();
+
 const bodyParser = require("body-parser");
-app.listen(6000, () => {
-  console.log("server is listening on port 5000");
-});
+const user_routes = require("./routes/users");
+require("dotenv").config();
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    app.listen(8080, () => {
+      console.log("server is listening on port 8080"); // Here you can set port number that better fits your needs
+    });
+  })
+  .catch((err) => console.log(Error));
 
 app.use(bodyParser.json()); // for parsing application/json
 
-app.get("/api/products", (req, res) => {
-  res.json([{ name: "iphone", price: 800 }]);
-});
-app.post("/api/user", (req, res) => {
-  console.log(req.body);
-});
+app.use("/api/users", user_routes);
