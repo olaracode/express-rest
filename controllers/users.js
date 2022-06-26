@@ -86,14 +86,16 @@ const userRegister = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+
   if (!email || !password) {
     return res.status(406).send({ error: "All fields are required" });
   }
+
   const user = await User.findOne({ email });
   if (!user) {
     return res.status(404).send({ error: "User not found" });
   }
-  bcrypt.compare(password, user.password, () => {});
+
   let token;
   if (bcrypt.compare(password, user.password)) {
     token = generateAccessToken(user.username);
