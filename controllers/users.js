@@ -1,10 +1,10 @@
-const User = require("../models/User");
-
 // ? Encription Module https://github.com/kelektiv/node.bcrypt.js#readme
-
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
 
+const User = require("../models/User");
+const { generateAccessToken } = require("../middlewares/auth");
+
+const saltRounds = 10;
 const passwordRgx = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
 const emailRgx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
@@ -67,7 +67,7 @@ const userRegister = async (req, res) => {
       });
     }
 
-    // ? Encryption and creation of instance
+    // ? Encryption and creation of user instance
     let response;
     bcrypt.hash(password, saltRounds, async (error, hash) => {
       response = await User.create({
@@ -84,4 +84,23 @@ const userRegister = async (req, res) => {
   }
 };
 
-module.exports = userRegister;
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(406).send({ error: "All fields are required" });
+  }
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).send({ error: "User not found" });
+  }
+  bcrypt.compare(password, user.password, () => {});
+  let token;
+  if (bcrypt.compare(password, user.password)) {
+    token = generateAccessToken(user.username);
+  } else {
+    return res.status(406).send({ error: "Incorrect Password" });
+  }
+  return res.json({ token });
+};
+
+module.exports = { userRegister, login };
