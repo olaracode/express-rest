@@ -9,7 +9,7 @@ const passwordRgx = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
 const emailRgx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
 const userRegister = async (req, res) => {
-  // ! Missing repeated username validation
+  // ! Missing email regex validation
   try {
     const { email, username, age, password } = req.body;
     // Validate for empty request body
@@ -105,4 +105,9 @@ const login = async (req, res) => {
   return res.json({ token });
 };
 
-module.exports = { userRegister, login };
+const getUserData = (req, res) => {
+  console.log("hi");
+  return;
+};
+
+module.exports = { userRegister, login, getUserData };
