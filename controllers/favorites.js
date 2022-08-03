@@ -6,9 +6,7 @@ const addFavorite = async (req, res) => {
     const { user, body } = req;
     const { url, name, img } = body;
     if (!url || !name || !img) {
-      return res
-        .status(400)
-        .send({ error: "The name or the url are required" });
+      return res.status(400).send({ error: "All fields are required 😠" });
     }
     const favorite = await Favorite.create({
       memberId: user.id,
@@ -48,7 +46,7 @@ const deleteFavorite = async (req, res) => {
       return res.status(404).send({ error: "Favorite not found 😕" });
     }
     if (favorite.memberId !== user.id) {
-      return res.status(401).send({ error: "Not yours to see 🙈" });
+      return res.status(401).send({ error: "Not yours 🙈" });
     }
     favorite.delete();
     return res

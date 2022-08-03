@@ -63,21 +63,21 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(406).send({ error: "All fields are required" });
+    return res.status(406).send({ error: "All fields are required 😠" });
   }
 
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(404).send({ error: "User not found" });
+    return res.status(404).send({ error: "User not found 😖" });
   }
 
   let token;
   if (bcrypt.compare(password, user.password)) {
     token = generateAccessToken({ username: user.username, id: user._id });
   } else {
-    return res.status(406).send({ error: "Incorrect Password" });
+    return res.status(401).send({ error: "Incorrect Password 💭" });
   }
-  return res.json({ token });
+  return res.status(200).send({ token });
 };
 
 const getUserData = (req, res) => {
