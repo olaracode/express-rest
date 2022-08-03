@@ -16,7 +16,7 @@ const app = express();
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
-    app.listen(8080, () => {
+    app.listen(process.env.PORT || 8080, () => {
       console.log("server is listening on port 8080"); // Here you can set port number that better fits your needs
     });
   })
