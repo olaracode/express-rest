@@ -6,8 +6,8 @@ const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 // routes
-const user_routes = require("./routes/users");
-const favorite_routes = require("./routes/favorites");
+const user_routes = require("../routes/users");
+const favorite_routes = require("../routes/favorites");
 // Env
 require("dotenv").config();
 
