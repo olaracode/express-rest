@@ -6,9 +6,10 @@
     "title": "Restful Express"
   },
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
-  "host": "localhost:8080",
+  "host": "rest-xxxiv.herokuapp.com",
   "basePath": "/api",
   "paths": {
     "/api/users/register": {
