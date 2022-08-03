@@ -299,7 +299,7 @@
             }
           },
           "400": {
-            "description": "All fields are required 😠",
+            "description": "All fields are required and most be unique 😠",
             "schema": {
               "type": "object",
               "properties": {
