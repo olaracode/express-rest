@@ -7,6 +7,6 @@ router.post("/register", userRegister);
 
 router.post("/login", login);
 
-router.get("/auth", tokenValidate, getUserData);
+router.get("/", tokenValidate, getUserData);
 
 module.exports = router;

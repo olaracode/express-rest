@@ -1,11 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-
 const bodyParser = require("body-parser");
 const user_routes = require("./routes/users");
-const posts_routes = require("./routes/posts");
-
+const favorite_routes = require("./routes/favorites");
 require("dotenv").config();
 
 mongoose
@@ -20,4 +18,4 @@ mongoose
 app.use(bodyParser.json()); // for parsing application/json
 
 app.use("/api/users", user_routes);
-app.use("api/posts/", posts_routes);
+app.use("/api/favorites", favorite_routes);

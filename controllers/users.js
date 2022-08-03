@@ -11,10 +11,10 @@ const emailRgx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 const userRegister = async (req, res) => {
   // ! Missing email regex validation
   try {
-    const { email, username, age, password } = req.body;
+    const { email, username, password } = req.body;
     // Validate for empty request body
-    if (!email || !password || !username || !age) {
-      return res.json({ status: 406, error: "All fields are requires" });
+    if (!email || !password || !username) {
+      return res.status(406).send({ error: "All fields are required" });
     }
 
     // ? Email Validation
@@ -38,45 +38,20 @@ const userRegister = async (req, res) => {
       return res.status(302).send({ error: "Username already in use" });
     }
 
-    // ? Age Validation
-    if (typeof age !== "number") {
-      return res.status(406).send({
-        error: "Age must be a number between 18 and 110",
-      });
-    } else if (age < 18) {
-      return res.status(406).send({
-        error: "You must be over 18 years old to sign up",
-      });
-    } else if (age > 110) {
-      return res.status(406).send({
-        error:
-          "Congrats on making it to 110+ Years, sorry boomer but you must be younger to use our app :(",
-      });
-    }
-
     // ? Password validation
     if (password.length < 5 || password.length > 15) {
       return res.status(406).send({
         error:
           "Password must be over 5 characters and under 10 characters long",
       });
-    } else if (!passwordRgx.test(password)) {
-      return res.status(406).send({
-        error:
-          "Password must contain at least one capital letter and one number",
-      });
     }
 
     // ? Encryption and creation of user instance
-    let response;
-    bcrypt.hash(password, saltRounds, async (error, hash) => {
-      response = await User.create({
-        username,
-        email,
-        password: hash,
-        age,
-      });
-      return response;
+    let hash = await bcrypt.hash(password, saltRounds);
+    let response = await User.create({
+      username,
+      email,
+      password: hash,
     });
     return res.json({ data: req.body });
   } catch (error) {
@@ -98,7 +73,7 @@ const login = async (req, res) => {
 
   let token;
   if (bcrypt.compare(password, user.password)) {
-    token = generateAccessToken(user.username);
+    token = generateAccessToken({ username: user.username, id: user._id });
   } else {
     return res.status(406).send({ error: "Incorrect Password" });
   }
@@ -106,8 +81,9 @@ const login = async (req, res) => {
 };
 
 const getUserData = (req, res) => {
-  console.log("hi");
-  return;
+  const { user } = req;
+  // let users = User.findOne({ email: req });
+  return res.status(200).send({ data: user });
 };
 
 module.exports = { userRegister, login, getUserData };
