@@ -1,6 +1,6 @@
 # Restful api with Express.js 💻
 
-Mongodb and Express study project to work as a backend for https://github.com/olaracode/pinterest-clone
+Resful api para practica de 4geeks
 
 ## **Stack 🔰**
 
@@ -9,3 +9,4 @@ Mongodb and Express study project to work as a backend for https://github.com/ol
 - Moongose
 - MongoDb (Mongo Atlas)
 - JsonWebToken
+- Swagger
