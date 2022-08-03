@@ -1,6 +1,5 @@
 const Favorite = require("../models/Favorite");
 const User = require("../models/User");
-
 const addFavorite = async (req, res) => {
   try {
     const { user, body } = req;
@@ -8,14 +7,20 @@ const addFavorite = async (req, res) => {
     if (!url || !name || !img) {
       return res.status(400).send({ error: "All fields are required 😠" });
     }
-    const favorite = await Favorite.create({
+
+    const favorite = await Favorite.findOne({ url, memberId: user.id });
+    if (favorite) {
+      return res.status(400).send({ error: `Already have this one 🙄` });
+    }
+
+    const favoriteResponse = await Favorite.create({
       memberId: user.id,
       url,
       name,
       img,
     });
 
-    return res.status(200).send({ data: favorite });
+    return res.status(200).send({ data: favoriteResponse });
   } catch (err) {
     return res.status(500).send({ error: err });
   }
